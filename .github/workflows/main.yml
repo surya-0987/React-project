@@ -1,33 +1,34 @@
-name: Deploy React App to GitHub Pages
+name: Deploy React App
 
 on:
   push:
-    branches:
-      - main # Change this to your main branch name
+    branches: [ main ]  # Trigger on pushes to the 'main' branch (or your desired branch)
 
 jobs:
-  deploy:
-    runs-on: ubuntu-latest
+  build-and-deploy:
+    runs-on: ubuntu-latest  # Run the workflow on Ubuntu virtual machines
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+      - uses: actions/checkout@v3  # Checkout your code repository
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v2
+      - name: Use Node.js 16  # Install the appropriate Node.js version (adjust if needed)
+        uses: actions/setup-node@v3
         with:
-          node-version: '18'
-          
-      - name: Remove Node Modules
+          node-version: 16
+
+      - name: Remove Existing Node Modules
         run: npm run clean
         
       - name: Install dependencies
         run: npm install
 
-      - name: Build
-        run: npm run build
+      - name: Build the React app
+        run: npm run build  # Replace with your build command, if different
 
       - name: Deploy to GitHub Pages
-        uses: JamesIves/github-pages-deploy-action@v4
+        uses: actions/deploy-pages@v1
         with:
-          folder: build
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          local_dir: build  # Path to your production-ready build folder (adjust if needed)
+          public_dir: build  # Configure the root of your deployed site (adjust if needed)
+          branch: gh-pages  # Deploy to the 'gh-pages' branch (or your desired branch)
