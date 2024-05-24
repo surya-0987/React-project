@@ -26,7 +26,7 @@ jobs:
         run: npm run build  # Replace with your build command, if different
 
       - name: Deploy to GitHub Pages
-        uses: actions/deploy-pages@v1
+        uses: JamesIves/github-pages-deploy-action@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           local_dir: build  # Path to your production-ready build folder (adjust if needed)
